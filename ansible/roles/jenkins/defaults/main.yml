@@ -1,0 +1,10 @@
+---
+
+jenkins_host: http://localhost:8080
+
+jenkins_cli: /usr/local/bin/jenkins-cli.jar
+
+apache_host: jenkins
+apache_http_port: 80
+apache_https_port: 443
+apache_admin_email: "admin@localhost"

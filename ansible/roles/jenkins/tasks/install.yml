@@ -1,0 +1,37 @@
+---
+- name: Jenkins | download apt key for jenkins repository
+  apt_key:
+    url=https://jenkins-ci.org/debian/jenkins-ci.org.key
+    state=present
+
+- name: Jenkins | add jenkins APT repository
+  apt_repository:
+    repo='deb http://pkg.jenkins-ci.org/debian binary/'
+    state=present
+
+- name: Jenkins | Install jenkins
+  apt:
+    pkg=jenkins
+    update_cache=yes
+    force=yes
+    state=latest
+  notify: Start jenkins
+
+- name: Get Jenkins client
+  shell: wget {{ jenkins_host }}/jnlpJars/jenkins-cli.jar -O {{ jenkins_cli }} creates={{ jenkins_cli }}
+
+- name: Install plugins
+  command: java -jar {{ jenkins_cli }} -s {{ jenkins_host }} install-plugin {{ item }}
+  with_items:
+      - checkstyle
+      - cloverphp
+      - dry
+      - htmlpublisher
+      - jdepend
+      - plot
+      - pmd
+      - violations
+      - xunit
+      - git
+      - AnsiColor
+  notify: Restart jenkins

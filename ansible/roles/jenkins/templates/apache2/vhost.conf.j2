@@ -1,0 +1,25 @@
+# {{ ansible_managed }}
+
+<VirtualHost *:80>
+    ServerAdmin admin@localhost
+    ServerName localhost
+
+    ServerAlias jenkins.local.com
+
+    ErrorLog "/var/log/apache2/jenkins-error.log"
+    CustomLog "/var/log/apache2/jenkins-access.log" common
+
+        ProxyRequests Off
+        <Proxy *>
+                Order deny,allow
+                Allow from all
+        </Proxy>
+        ProxyPreserveHost on
+        ProxyPass / http://localhost:8080/ nocanon
+        ProxyPassReverse  /  http://localhost:8080/
+        AllowEncodedSlashes NoDecode
+
+
+</VirtualHost>
+
+

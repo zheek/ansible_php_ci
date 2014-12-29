@@ -6,4 +6,4 @@
   sudo: true
   roles:
     - setup
-    - apache2
+    - jenkins

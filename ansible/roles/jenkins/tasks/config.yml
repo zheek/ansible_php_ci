@@ -1,0 +1,38 @@
+   - host: 'jenkins'
+     webfolder: ''
+     user: "{{ apache_user }}"
+     group: "{{ apache_group }}"
+     listen_port: "{{ apache_http_port }}"
+     https_port: "{{ apache_https_port }}"
+     admin_email: "{{ apache_admin_email }}"
+     aliases: ['jenkins.{{ domain_name }}']
+     allowoverride: "None"
+     options: "FollowSymLinks"
+
+
+# Create folder to hold the enabled ports file
+- name: Apache2 | Create enabled ports folders
+  file:
+     path: /etc/apache2/ports-enabled
+     state: directory
+     owner: root
+     group: root
+
+# Copy the vhost configuration to the site-available location
+- name: Apache2 | Configure apache http vhosts
+  template:
+    src: apache2/vhost.conf.j2
+    dest: /etc/apache2/sites-available/{{ apache_host }}.conf
+
+- name: Apache2 | Open the apache listen port
+  template:
+    src: apache2/port_all.conf.j2
+    dest: /etc/apache2/ports-enabled/port_{{ apache_http_port }}.conf
+
+# Enable the vhost configuration
+- name: Apache2 | Enable vhosts
+  file:
+    src: /etc/apache2/sites-available/{{ apache_host }}.conf
+    dest: /etc/apache2/sites-enabled/{{ apache_host }}.conf
+    state: link
+  notify: Restart apache2
