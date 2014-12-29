@@ -1,0 +1,83 @@
+---
+
+# Create the user that will run the apache server (if it does
+# not exist yet
+- name: Apache2 | Create home folders
+  user:
+    name: "{{ item['user'] }}"
+    state: present
+    createhome: yes
+    shell: /bin/bash
+  with_items: vhost_sites
+  sudo: yes
+
+# Create a place holder folder inside the apache root location
+# This folder inherits all the security settings we have set
+# for the apache root folder
+- name: Apache2 | Create web folders for vhosts under apache2 root folder
+  file:
+    path: "{{ apache_root }}"
+    state: directory
+    owner: "{{ item['user'] }}"
+    group: "{{ item['group'] }}"
+  with_items: vhost_sites
+
+# Create a log file
+- name: Apache2 | Create per vhost log folder in apache log location
+  file:
+    path: /var/log/apache2/{{ item['host'] }}
+    state: directory
+    owner: "{{ item['user'] }}"
+    group: "{{ item['group'] }}"
+    mode: "777"
+  with_items: vhost_sites
+
+# Create folder to hold the enabled ports file
+- name: Apache2 | Create enabled ports folders
+  file:
+     path: /etc/apache2/ports-enabled
+     state: directory
+     owner: root
+     group: root
+
+# Copy the vhost configuration to the site-available location
+- name: Apache2 | Configure apache http vhosts
+  template:
+    src: apache2/vhost.conf.j2
+    dest: /etc/apache2/sites-available/{{ item['host'] }}.conf
+  with_items: vhost_sites
+
+- name: Apache2 | Open the apache listen port
+  template:
+    src: apache2/port_all.conf.j2
+    dest: /etc/apache2/ports-enabled/port_{{ item['listen_port'] }}.conf
+  with_items: vhost_sites
+
+# Enable the vhost configuration
+- name: Apache2 | Enable vhosts
+  file:
+    src: /etc/apache2/sites-available/{{ item['host'] }}.conf
+    dest: /etc/apache2/sites-enabled/{{ item['host'] }}.conf
+    state: link
+  with_items: vhost_sites
+  notify: Restart apache2
+
+- name: Apache2 | Configure apache https vhosts
+  template:
+    src: apache2/https_vhost.conf.j2
+    dest: /etc/apache2/sites-available/{{ item['host'] }}-ssl.conf
+  with_items: https_vhost_sites
+
+- name: Apache2 | Open the apache https listen port
+  template:
+    src: apache2/port_all.conf.j2
+    dest: /etc/apache2/ports-enabled/port_{{ item['listen_port'] }}.conf
+  with_items: https_vhost_sites
+
+- name: Apache2 | Enable https vhosts
+  file:
+    src: /etc/apache2/sites-available/{{ item['host'] }}-ssl.conf
+    dest: /etc/apache2/sites-enabled/{{ item['host'] }}-ssl.conf
+    state: link
+  with_items: vhost_sites
+  notify: Restart apache2

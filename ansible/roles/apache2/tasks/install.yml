@@ -1,0 +1,22 @@
+
+- name: Apache2 | Install apache2 package
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: [ "apache2" ]
+
+- stat: path=/etc/apache2/sites-enabled/000-default.conf
+  register: apache_default_site
+
+- name: Apache2 | Disable the default apache site
+  action: command a2dissite 000-default
+  notify: Restart apache2
+  when: apache_default_site.stat.exists
+
+- name: Apache2 | enable the Apache2 modules
+  apache2_module:
+    state: present
+    name: "{{ item }}"
+  with_items: apache_mods
+  notify: Restart apache2

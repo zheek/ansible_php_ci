@@ -1,0 +1,17 @@
+---
+# Thread management
+apache_flavor: "prefork"
+
+# Httpd user and group
+apache_user: "www-user"
+apache_group: "www-user"
+
+# Default apache base directory (without trailing '/')
+apache_root: "/var/www"
+
+apache_ssl_key: '/etc/apache2/certs/ssl.key'
+apache_ssl_crt: '/etc/apache2/certs/ssl.crt'
+
+apache_mods:
+  - rewrite
+  - ssl

@@ -1,0 +1,14 @@
+---
+# Sets up the infrastructure required for this application
+
+- name: setup host
+  hosts: all
+  sudo: true
+  roles:
+    - setup
+    - xbmc
+#  vars_prompt:
+#    - name: "xbmc_user_password"
+#      prompt: "Enter xbmc user password"
+#      private: yes
+#      default: "xbmc"

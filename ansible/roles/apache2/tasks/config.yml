@@ -1,0 +1,28 @@
+---
+
+- name: Apache2 | create apache configuration file
+  template:
+    src: apache2/apache2.conf.j2
+    dest: /etc/apache2/apache2.conf
+
+- name: Apache2 | Create folder to store the certificates
+  file:
+     path: /etc/apache2/certs
+     state: directory
+     owner: root
+     group: root
+
+- name: Apache2 | copy self signed certificate
+  copy:
+    src: ssl.crt
+    dest: /etc/apache2/certs/
+    owner: root
+    group: root
+
+- name: Apache2 | copy self signed certificate key
+  copy:
+    src: ssl.key
+    dest: /etc/apache2/certs/
+    owner: root
+    group: root
+

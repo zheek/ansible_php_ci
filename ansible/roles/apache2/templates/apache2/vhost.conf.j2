@@ -1,0 +1,29 @@
+# {{ ansible_managed }}
+
+<VirtualHost *:{{ item['listen_port'] }}>
+    ServerAdmin {{ item['admin_email'] }}
+    ServerName {{ item['host'] }}
+    DocumentRoot {{ apache_root }}/{{ item['host'] }}/{{ item['webfolder'] }}
+
+{% for alias in item['aliases']|default([]) %}
+    ServerAlias {{ alias }}
+{% endfor %}
+
+    ErrorLog "/var/log/apache2/{{ item['host'] }}-error.log"
+    CustomLog "/var/log/apache2/{{ item['host'] }}-access.log" common
+
+    <Directory {{ apache_root }}/{{ item['host'] }}/{{ item['webfolder'] }}>
+        Options {{ item['options'] }}
+        AllowOverride {{ item['allowoverride'] | default("None") }}
+        Order allow,deny
+        Allow from All
+
+    </Directory>
+
+    # Redirect http to https
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule (.*) https://%{HTTP_HOST}:{{ item['https_port'] }}%{REQUEST_URI}
+
+</VirtualHost>
+

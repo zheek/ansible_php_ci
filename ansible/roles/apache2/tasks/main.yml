@@ -1,0 +1,11 @@
+---
+
+- include: install.yml
+
+- include: config.yml
+  notify: Restart apache2
+
+- include: create-sites.yml
+  notify: Restart apache2
+  when: vhost_sites is defined
+
