@@ -6,9 +6,4 @@
   sudo: true
   roles:
     - setup
-    - xbmc
-#  vars_prompt:
-#    - name: "xbmc_user_password"
-#      prompt: "Enter xbmc user password"
-#      private: yes
-#      default: "xbmc"
+    - apache2
