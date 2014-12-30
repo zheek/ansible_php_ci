@@ -22,8 +22,11 @@ in this repository
 
 Post install
 ------------
-- set git repository and credentials
+- Set security for the jenkins web interface (anyone can access it now)
+- There will be a php job called php-template. Rename this to suit your project
+- Go to the manage job section and set the git repository and credentials
 - Manage Jenkins > Configure Global Security > and select the markup formatter as RAW HTML.
+- Enable the job
 
 Known issues
 ------------
