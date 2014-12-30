@@ -1,0 +1,10 @@
+- name: Install PHP 5.5
+  action: apt pkg={{ item }} update_cache=yes force=yes state=latest
+  with_items:
+        - php5
+        - php5-mcrypt
+        - php5-tidy
+        - php-pear
+        - php5-curl
+        - php5-xsl
+        - php5-xdebug

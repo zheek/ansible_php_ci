@@ -4,3 +4,8 @@
     src=locale
     dest=/etc/default/locale
 
+- name: Install base packages
+  action: apt pkg={{ item }} update_cache=yes force=yes state=latest
+  with_items:
+        - vim
+        - git

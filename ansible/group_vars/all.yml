@@ -1,2 +1,20 @@
 domain_name: local.com
 
+# Required Jenkins Plugins (http://jenkins-php.org/installation.html)
+jenkins_required_plugins:
+  - checkstyle
+  - cloverphp
+  - crap4j
+  - dry
+  - htmlpublisher
+  - jdepend
+  - plot
+  - pmd
+  - violations
+  - xunit
+
+# Additional plugins
+jenkins_extra_plugins:
+  - git
+  - AnsiColor
+

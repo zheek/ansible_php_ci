@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- http://phpunit.de/manual/4.1/en/appendixes.configuration.html -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         bootstrap="bootstrap.php.cache"
+         verbose="true"
+>
+    <testsuites>
+        <testsuite name="Project Test Suite">
+            <directory>../src/*/*Bundle/Tests</directory>
+            <directory>../src/*/Bundle/*Bundle/Tests</directory>
+           <!-- 
+	      <directory suffix="Test.php">src</directory>
+	    -->
+        </testsuite>
+    </testsuites>
+
+   <!-- log location is relative to the phpunit config file -->
+   <logging>
+      <log type="coverage-html" target="../buildOutput/coverage"/>
+      <log type="coverage-clover" target="../buildOutput/logs/clover.xml"/>
+      <log type="coverage-crap4j" target="../buildOutput/logs/crap4j.xml"/>
+      <log type="junit" target="../buildOutput/logs/junit.xml" logIncompleteSkipped="false"/>
+   </logging>
+
+    <!--
+    <php>
+        <server name="KERNEL_DIR" value="/path/to/your/app/" />
+    </php>
+    -->
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../src</directory>
+            <exclude>
+                <directory>../src/*/*Bundle/Resources</directory>
+                <directory>../src/*/*Bundle/Tests</directory>
+                <directory>../src/*/Bundle/*Bundle/Resources</directory>
+                <directory>../src/*/Bundle/*Bundle/Tests</directory>
+		<!--
+                <file>src/bootstrap.php</file>
+		 -->
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

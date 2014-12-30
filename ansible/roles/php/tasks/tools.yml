@@ -1,0 +1,59 @@
+
+- name: Set pear autodiscover
+  command: pear config-set auto_discover 1
+  register: pear_result
+
+- name: Setup pdepend PEAR channel.
+  command: pear channel-discover pear.pdepend.org
+  register: pdepend_channel_result
+  changed_when: "'succeeded' not in pdepend_channel_result.stdout"
+  failed_when: "'already initialized' not in pdepend_channel_result.stdout"
+  ignore_errors: yes
+
+- name: Install pdepend.
+  command: pear install pdepend/PHP_Depend
+  register: pdepend_result
+  changed_when: "'succeeded' not in pdepend_result.stdout"
+  failed_when: "'1.1.4' not in pdepend_result.stdout"
+  ignore_errors: yes
+
+- name: Setup phpmd PEAR channel.
+  command: pear channel-discover pear.phpmd.org
+  register: phpmd_channel_result
+  changed_when: "'initialized' not in phpmd_channel_result.stdout"
+  failed_when: "'already initialized' not in phpmd_channel_result.stdout"
+  ignore_errors: yes
+
+- name: Install phpmd.
+  command: pear install phpmd/PHP_PMD
+  register: phpmd_result
+  changed_when: "'installed' not in phpmd_result.stdout"
+  failed_when: "'1.5.0' not in phpmd_result.stdout"
+  ignore_errors: yes
+
+- name: Install PHP_CodeSniffer.
+  command: pear install PHP_CodeSniffer
+  register: phpcs_result
+  changed_when: "'installed' not in phpcs_result.stdout"
+  failed_when: "'2.1.0' not in phpcs_result.stdout"
+  ignore_errors: yes
+
+- name: Install PHP tools
+  shell: wget {{ item['url'] }} -O {{ item['dest'] }} && chmod a+x {{ item['dest'] }} 
+    creates={{ item['dest'] }}
+  with_items: jenkins_php_tools
+
+- name: Setup phing PEAR channel.
+  command: pear channel-discover pear.phing.info
+  register: pear_channel_result
+  ignore_errors: yes
+  
+- name: Install phing.
+  command: pear install phing/phing
+  register: pear_result
+  changed_when: pear_result.stdout.find("already installed") == -1
+  ignore_errors: yes
+  
+- name: Install phpcpd.
+  command: pear install phpunit/phpcpd
+  ignore_errors: yes

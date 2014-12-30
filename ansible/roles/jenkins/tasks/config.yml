@@ -1,15 +1,3 @@
-   - host: 'jenkins'
-     webfolder: ''
-     user: "{{ apache_user }}"
-     group: "{{ apache_group }}"
-     listen_port: "{{ apache_http_port }}"
-     https_port: "{{ apache_https_port }}"
-     admin_email: "{{ apache_admin_email }}"
-     aliases: ['jenkins.{{ domain_name }}']
-     allowoverride: "None"
-     options: "FollowSymLinks"
-
-
 # Create folder to hold the enabled ports file
 - name: Apache2 | Create enabled ports folders
   file:
@@ -36,3 +24,14 @@
     dest: /etc/apache2/sites-enabled/{{ apache_host }}.conf
     state: link
   notify: Restart apache2
+
+# Install Jenkins php template (http://jenkins-php.org/integration.html)
+- name: copy jenkins config template
+  template:
+    src: config.xml.j2
+    dest: /tmp/jenkins_config.xml
+    
+- name: install jenkins config template
+  shell: "cat /tmp/jenkins_config.xml | java -jar {{ jenkins_cli }} -s {{ jenkins_host }} create-job php-template"
+  notify: Restart jenkins
+  ignore_errors: yes

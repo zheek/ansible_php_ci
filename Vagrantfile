@@ -19,7 +19,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       "phpci-machine" => ["phpci"],
       "all_groups:children" => ["phpci-machine"]
     }
-    # ansible.verbose = 'vvvv'
+#    ansible.verbose = 'vvvv'
   end
 end
 

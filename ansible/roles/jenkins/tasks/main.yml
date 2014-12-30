@@ -2,3 +2,6 @@
 
 - include: install.yml
 
+- include: plugins.yml
+
+- include: config.yml

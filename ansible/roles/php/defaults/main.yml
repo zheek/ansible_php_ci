@@ -1,0 +1,32 @@
+# References:
+# - Required PHP Tools: 
+#   http://jenkins-php.org/installation.html
+# - ansible example:
+#   https://github.com/wearebase/jenkins-ansible-php-orchestration
+#
+jenkins_php_tools:
+ - name: phpUnit
+   url: https://phar.phpunit.de/phpunit.phar
+   dest: /usr/local/bin/phpunit
+ - name: PHPLOC
+   url: https://phar.phpunit.de/phploc.phar
+   dest: /usr/local/bin/phploc
+ - name: phpDox
+   url: http://phpdox.de/releases/phpdox.phar
+   dest: /usr/local/bin/phpdox
+
+
+# - name: PHPCPD (PHP cut and paste detector)
+#   url: https://phar.phpunit.de/phpcpd.phar
+#   dest: /usr/local/bin/phpcpd
+
+# - name: PHP_CodeSniffer
+#   url: http://cs.sensiolabs.org/get/php-cs-fixer.phar
+
+#- name: Install PHPCS Fixer
+#  shell: wget {{ item['url'] }} -O /usr/local/bin/php-cs-fixer && chmod a+x /usr/local/bin/php-cs-fixer creates=/usr/local/bin/php-cs-fixer
+
+#
+
+
+#wget http://phpdox.de/releases/phpdox.phar -O /usr/local/bin/phpdox && chmod a+x /usr/local/bin/phpdox creates=/usr/local/bin/phploc

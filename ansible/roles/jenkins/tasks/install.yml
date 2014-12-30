@@ -15,23 +15,11 @@
     update_cache=yes
     force=yes
     state=latest
-  notify: Start jenkins
+  notify: 
+    - Start jenkins
 
-- name: Get Jenkins client
-  shell: wget {{ jenkins_host }}/jnlpJars/jenkins-cli.jar -O {{ jenkins_cli }} creates={{ jenkins_cli }}
-
-- name: Install plugins
-  command: java -jar {{ jenkins_cli }} -s {{ jenkins_host }} install-plugin {{ item }}
-  with_items:
-      - checkstyle
-      - cloverphp
-      - dry
-      - htmlpublisher
-      - jdepend
-      - plot
-      - pmd
-      - violations
-      - xunit
-      - git
-      - AnsiColor
-  notify: Restart jenkins
+- name: Jenkins | Install ant
+  apt:
+    pkg=ant
+    update_cache=yes
+        
