@@ -54,6 +54,3 @@
   changed_when: pear_result.stdout.find("already installed") == -1
   ignore_errors: yes
   
-- name: Install phpcpd.
-  command: pear install phpunit/phpcpd
-  ignore_errors: yes

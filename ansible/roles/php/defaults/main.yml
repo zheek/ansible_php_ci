@@ -14,11 +14,10 @@ jenkins_php_tools:
  - name: phpDox
    url: http://phpdox.de/releases/phpdox.phar
    dest: /usr/local/bin/phpdox
+ - name: phpcpd
+   url: https://phar.phpunit.de/phpcpd.phar
+   dest: /usr/local/bin/phpcpd
 
-
-# - name: PHPCPD (PHP cut and paste detector)
-#   url: https://phar.phpunit.de/phpcpd.phar
-#   dest: /usr/local/bin/phpcpd
 
 # - name: PHP_CodeSniffer
 #   url: http://cs.sensiolabs.org/get/php-cs-fixer.phar
